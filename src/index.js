@@ -1,7 +1,10 @@
 import "./main.css";
 
-import Speech from "./Speech";
+import Radar from "./Radar";
+// import Speech from "./Speech";
 
-const speechInit = new Speech();
+const radarInit = new Radar();
+// const speechInit = new Speech();
 
-speechInit.doSomething();
+radarInit.init();
+// speechInit.doSomething();

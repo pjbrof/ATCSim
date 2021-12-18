@@ -24,30 +24,20 @@ export default class Speech {
 
     speechRecognitionList.addFromString(grammar, 1);
     recognition.grammars = speechRecognitionList;
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 10;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
     recognition.continuous = true;
-
+    
     recognition.onresult = (event) => {
-      let interimTranscript = "";
-      for (
-        let i = event.resultIndex, len = event.results.length;
-        i < len;
-        i++
-      ) {
-        let transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript;
-        } else {
-          interimTranscript += transcript;
-        }
-      }
-
-      document.querySelector(".output").innerHTML =
-        finalTranscript + '<i style="color:#ccc;">' + interimTranscript + "</>";
-
-      console.log(speechRecognitionList[0].src); // should return the same as the contents of the grammar variable
-      console.log(speechRecognitionList[0].weight);
+      // confidence color coding
+      // confidence "say again" prompt
+      let transcript = event.results[0][0].transcript;
+      
+      const newCommand = document.createElement('LI');
+      newCommand.innerText = transcript;
+      document.querySelector(".commands").prepend(newCommand);
+      
+      transcript = '';
     };
 
     window.onkeydown = function (e) {
