@@ -1,5 +1,6 @@
 import Plane from "./Plane";
-
+import Command from "./Command";
+import { GUI } from 'dat.gui';
 export default class Radar {
     constructor () {
         this.canvas = document.getElementById('game');
@@ -9,8 +10,7 @@ export default class Radar {
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
         this.defaultColor = '#39FF14';
-        this.plane1 = new Plane(this.canvas, this.ctx, this.centerX, this.centerY, 50, 'AAL91', 'FL90');
-        this.plane2 = new Plane(this.canvas, this.ctx, 300, 300, 50, 'JB191', 'FL030');
+        this.planes = [];
     }
     
     getCanvasDimensions() {
@@ -38,7 +38,71 @@ export default class Radar {
         this.ctx.stroke();
     }
     
-    setup () {}
+    randomStartPositionX() {
+        return Math.floor(Math.random() * (this.canvas.width - 0 + 1) + 0)
+    }
+    
+    randomStartPositionY() {
+        return Math.floor(Math.random() * (this.canvas.height - 0 + 1) + 0)
+    }
+    
+    randomHeading() {
+        return Math.floor(Math.random() * (360 - 0 + 1) + 0)
+    }
+    
+    generateFlight() {
+        const airlines = ['AAL', 'JB', 'DA', 'UPS', 'FDX'];
+        const airline = airlines[Math.floor(Math.random() * airlines.length)];
+        const flightNumber = Math.floor(Math.random() * (5000 - 0 + 1) + 0);
+        return `${airline}${flightNumber}`; 
+    }
+    
+    randomFlightLevel() {
+        // Class A Only
+        const minFL = 190;
+        const maxFL = 450;
+        return Math.floor(Math.random() * (maxFL - minFL + 1) + minFL);
+    }
+    
+    randomSpeed() {
+        const minSpeed = 160;
+        const maxSpeed = 420;
+        return Math.floor(Math.random() * (maxSpeed - minSpeed + 1) + minSpeed);
+    }
+    
+    executeCommand() {
+        document.getElementById("command").addEventListener('keypress', (e) => {
+            if (e.key == 'Enter') {
+                const commandArr = e.target.value.split(' ');
+                const flight = this.planes.find((flight) => commandArr[0] === flight.callsign);
+                flight.setHeading(commandArr[1]);
+            } else {
+                return false;
+            }
+        });
+    }
+    
+    setup () {
+        // const gui = new GUI();
+        // const MAX_PLANES = {numOfPlanes: 8};
+        // gui.add(MAX_PLANES, 'numOfPlanes', 1, 50, 1);
+        const MAX_PLANES = 8;
+        for (let i = 1; i <= MAX_PLANES; i++) {
+            this.planes.push(
+                new Plane(
+                    this.canvas,
+                    this.ctx,
+                    this.randomStartPositionX(),
+                    this.randomStartPositionY(),
+                    this.randomHeading(),
+                    this.generateFlight(),
+                    this.randomFlightLevel(),
+                    this.randomSpeed()
+                )
+            );
+        }
+        
+    }
     
     animate() {
         requestAnimationFrame(() => this.animate());
@@ -47,8 +111,14 @@ export default class Radar {
     }
     
     timeline() {
-        this.plane1.init();
-        this.plane2.init();
+        this.planes.forEach((plane) => {
+            plane.init();
+        });
+        
+        /* setTimeout(() => {
+            this.planes[2].setHeading(90);
+        }, 5000); */
+        this.executeCommand();
         
         this.drawRadarCircles();
     }
