@@ -1,7 +1,7 @@
 import "./main.css";
 
-import Radar from "./Radar";
+import Game from "./Game";
 
-const radarInit = new Radar();
+const ATCSim = new Game();
 
-radarInit.init();
+ATCSim.init();

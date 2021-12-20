@@ -1,20 +1,29 @@
 export default class Command {
     constructor () {
         this.el = document.getElementById("command");
-        this.instruction = ''
+        this.commandStr = '';
+        this.commandArr = [];
     }
     
     getCommand() {
-        return this.instruction;
+        return {
+            flight: this.commandArr[0],
+            heading: this.commandArr[1]
+        }
     }
     
     setCommand () {
-        this.el.addEventListener('keypress', (e) => {
-            if (e.key == 'Enter') {
-                this.instruction = e.target.value;
-            } else {
-                return false;
-            }
-        });
+        return false;
+    }
+    
+    ael () {
+        this.el.addEventListener('keypress', (e) => this.handleEvent(e));
+    }
+    
+    handleEvent(e) {
+        if (e.key == 'Enter') {
+            this.commandStr = e.target.value;
+            this.commandArr = this.commandStr.split(' ');
+        }
     }
 }

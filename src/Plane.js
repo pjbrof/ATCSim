@@ -108,8 +108,4 @@ export default class Plane {
         this.x += this.calculateVelocity()[0];
         this.y += this.calculateVelocity()[1];
     }
-    
-    init() {
-        this.update();
-    }
 }

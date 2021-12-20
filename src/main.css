@@ -43,9 +43,9 @@ li {
 
 .command-container {
   position: absolute;
-  left: 20px;
+  left: 1rem;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.502);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 250px;
 }
 
@@ -62,4 +62,14 @@ li {
 #command::placeholder {
   font-size: 18px;
   padding-left: 12px;
+}
+
+.scoreboard {
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: lime;
+  width: 250px;
+  padding: 8px 1rem 10px;
 }
