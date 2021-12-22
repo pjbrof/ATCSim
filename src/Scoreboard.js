@@ -1,19 +1,31 @@
 export default class Scoreboard {
     constructor () {
-        this.el = document.getElementById('score');
+        this.app = document.getElementById('app');
         this.score = 0;
     }
     
     getScore () {
-        return this.score;
+        return Math.floor(this.score);
     }
     
     setScore(score) {
         this.score += score;
-        this.el.innerText = this.score;
+        this.el.innerText = this.getScore();
+    }
+    
+    render() {
+        const wrapper = document.createElement('section');
+        const text = document.createTextNode('Score: ');
+        wrapper.appendChild(text);
+        wrapper.className = 'scoreboard';
+        this.el = document.createElement('span');
+        this.el.id = 'score';
+        wrapper.appendChild(this.el);
+        this.app.appendChild(wrapper);
     }
     
     init() {
-        this.el.innerText = this.score;
+        this.render();
+        this.el.innerText = this.getScore();
     }
 }

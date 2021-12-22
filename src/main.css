@@ -11,6 +11,8 @@ body {
   overflow: hidden;
   background-color: #212121;
   color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  color: #39FF14;
 }
 
 #app {
@@ -51,12 +53,13 @@ li {
 
 .command-container #command {
   background-color: transparent;
-  color: lime;
+  color: #39FF14;
   border: 0;
   width: 100%;
   height: 24px;
   font-size: 24px;
   padding: 4px;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 #command::placeholder {
@@ -66,10 +69,10 @@ li {
 
 .scoreboard {
   position: absolute;
-  bottom: 0;
-  left: 1rem;
+  top: 0;
+  right: 1rem;
   background-color: rgba(0, 0, 0, 0.5);
-  color: lime;
+  color: #39FF14;
   width: 250px;
-  padding: 8px 1rem 10px;
+  padding: 10px 1rem 8px;
 }

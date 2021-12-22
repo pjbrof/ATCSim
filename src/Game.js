@@ -13,6 +13,7 @@ export default class Game {
         this.scoreboard = new Scoreboard();
         this.radar = new Radar(this.canvas, this.ctx);
         this.MAX_PLANES = 8;
+        this.fcaArea = 100;
     }
     
     randomStartPositionX() {
@@ -28,7 +29,7 @@ export default class Game {
     }
     
     generateFlight() {
-        const airlines = ['AAL', 'JB', 'DA', 'UPS', 'FDX'];
+        const airlines = ['AAL', 'JBU', 'DAL', 'SWA', 'NKS', 'ASA', 'UAL'];
         const airline = airlines[Math.floor(Math.random() * airlines.length)];
         const flightNumber = Math.floor(Math.random() * (5000 - 0 + 1) + 0);
         return `${airline}${flightNumber}`; 
@@ -52,7 +53,18 @@ export default class Game {
             if (e.key == 'Enter') {
                 const commandArr = e.target.value.split(' ');
                 const flight = this.planes.find((flight) => commandArr[0] === flight.callsign);
-                flight.setHeading(commandArr[1]);
+                if (commandArr[1] === 'FCA') {
+                    const flightIndex = this.planes.findIndex((flight) => commandArr[0] === flight.callsign);
+                    if (flight.getFCA() === true) {
+                        this.planes.splice(flightIndex, 1);
+                        this.scoreboard.setScore(100);
+                    } else {
+                        this.scoreboard.setScore(-10);
+                    }
+                }
+                if (Number.isInteger(parseInt(commandArr[1]))) {
+                    flight.setHeading(commandArr[1]);
+                }
             } else {
                 return false;
             }
@@ -86,6 +98,29 @@ export default class Game {
     timeline() {
         this.planes.forEach((plane) => {
             plane.update();
+            
+            for (let j = 0; j < this.planes.length; j++) {
+                if (plane.callsign !== this.planes[j].callsign) {
+                    const d = Math.hypot(plane.x - this.planes[j].x, plane.y - this.planes[j].y);
+                    
+                    // 1000ft seperation
+                    // TODO 3mi vertical
+                    if (d < 30) {
+                        this.scoreboard.setScore(-0.05);
+                    }
+                }
+            }
+            
+            if (
+                (plane.x > 0 && plane.x < this.fcaArea) ||
+                (plane.x < this.canvas.width && plane.x > this.canvas.width - this.fcaArea) ||
+                (plane.y > 0 && plane.y < this.fcaArea) ||
+                (plane.y < this.canvas.height && plane.y > this.canvas.height - this.fcaArea)
+            ) {
+                plane.setFCA(true);
+            } else {
+                plane.setFCA(false);
+            }
         });
         
         this.radar.drawRadarCircles();

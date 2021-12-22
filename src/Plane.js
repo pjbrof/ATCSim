@@ -19,6 +19,7 @@ export default class Plane {
         this.lineHeight = 18;
         this.fontFace = 'Courier New';
         this.timefactor = 40;
+        this.fca = false;
     }
     
     getDegrees() {
@@ -91,6 +92,14 @@ export default class Plane {
         this.ctx.fillStyle = this.defaultColor;
         this.ctx.textAlign = 'left';
         this.ctx.fillText(`${this.speed}kts`, this.x + this.labelOffset[0], this.y + this.labelOffset[1] + this.lineHeight * 2);
+    }
+    
+    getFCA () {
+        return this.fca;
+    }
+    
+    setFCA (status) {
+        this.fca = status;
     }
     
     draw () {
