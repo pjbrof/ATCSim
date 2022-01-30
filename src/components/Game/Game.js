@@ -1,6 +1,6 @@
 import Radar from "./Radar";
 import Plane from "./Plane";
-import Scoreboard from "./Scoreboard";
+import Scoreboard from "../Scoreboard/Scoreboard";
 
 export default class Game {
     constructor () {
@@ -99,6 +99,9 @@ export default class Game {
         this.planes.forEach((plane) => {
             plane.update();
             
+            /**
+             * Near miss calculation
+             */
             for (let j = 0; j < this.planes.length; j++) {
                 if (plane.callsign !== this.planes[j].callsign) {
                     const d = Math.hypot(plane.x - this.planes[j].x, plane.y - this.planes[j].y);
@@ -111,6 +114,9 @@ export default class Game {
                 }
             }
             
+            /**
+             * Frequency Change Approved
+             */
             if (
                 (plane.x > 0 && plane.x < this.fcaArea) ||
                 (plane.x < this.canvas.width && plane.x > this.canvas.width - this.fcaArea) ||
@@ -130,8 +136,10 @@ export default class Game {
         this.setup();
         this.animate();
         this.executeCommand();
-        // setInterval(() => {
-        //     this.scoreboard.setScore(5);
-        // }, 5000);
+        
+        window.addEventListener('resize', () => {
+            this.canvas.width = document.body.clientWidth;
+            this.canvas.height = document.body.clientHeight;
+        })
     }
 }

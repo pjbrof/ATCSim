@@ -1,7 +1,7 @@
 export default class Speech {
   constructor() {}
 
-  doSomething() {
+  init() {
     const SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
     const recognition = new SpeechRecognition();
     const SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
@@ -20,7 +20,6 @@ export default class Speech {
       "#JSGF V1.0; grammar airlines; public <airlines> = " +
       airlines.join(" | ") +
       " ;";
-    let finalTranscript = "";
 
     speechRecognitionList.addFromString(grammar, 1);
     recognition.grammars = speechRecognitionList;
@@ -52,6 +51,4 @@ export default class Speech {
       }
     };
   }
-
-  somethingElse() {}
 }
